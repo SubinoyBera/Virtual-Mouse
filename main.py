@@ -17,6 +17,7 @@ hands= mp_hands.Hands(
 )
 
 def find_fingertip(processed_frame):
+    # Extracts the coordinates of the index fingertip from the processed hand landmarks.
     if processed_frame.multi_hand_landmarks:
         hand_landmarks= processed_frame.multi_hand_landmarks[0]
         return hand_landmarks.landmark[mp_hands.HandLandmark.INDEX_FINGER_TIP]
@@ -24,14 +25,7 @@ def find_fingertip(processed_frame):
     return None
 
 def is_leftclick(landmarks_list, thumb_index_dist):
-    """
-    Detects if the left-click gesture is being performed.
-
-    A left-click gesture is defined as the index finger pointing upwards while
-    the middle finger is bent downwards, and the thumb and index finger should
-    be apart (more than 50 pixels).
-    """
-
+    # Detects if the left-click gesture is being performed.
     return(
         get_angle(landmarks_list[5], landmarks_list[6], landmarks_list[8])<50 and
         get_angle(landmarks_list[9], landmarks_list[10], landmarks_list[12])>90 and
@@ -39,13 +33,7 @@ def is_leftclick(landmarks_list, thumb_index_dist):
     )
 
 def is_rightclick(landmarks_list, thumb_index_dist):
-    """
-    Detects if the right-click gesture is being performed.
-
-    A right-click gesture is defined as the index finger pointing downwards while
-    the thumb is pointing upwards and the thumb and index finger should be apart 
-    (more than 50 pixels).
-    """
+    # Detects if the right-click gesture is being performed.
     return(
         get_angle(landmarks_list[5], landmarks_list[6], landmarks_list[8])>90 and
         get_angle(landmarks_list[9], landmarks_list[10], landmarks_list[12])<50 and
@@ -53,13 +41,7 @@ def is_rightclick(landmarks_list, thumb_index_dist):
     )
 
 def is_doubleclick(landmarks_list, thumb_index_dist):
-    """
-    Detects if the double-click gesture is being performed.
-
-    A double-click gesture is defined as the index finger pointing downwards while
-    the thumb is pointing downwards and the thumb and index finger should be apart 
-    (more than 50 pixels).
-    """
+    # Detects if the double-click gesture is being performed.
     return(
     get_angle(landmarks_list[5], landmarks_list[6], landmarks_list[8])<50 and
     get_angle(landmarks_list[9], landmarks_list[10], landmarks_list[12])<50 and
@@ -67,13 +49,7 @@ def is_doubleclick(landmarks_list, thumb_index_dist):
     )
 
 def is_screenshot(landmarks_list, thumb_index_dist):
-    """
-    Detects if the screenshot gesture is being performed.
-
-    A screenshot gesture is defined as the index finger pointing downwards while
-    the thumb is pointing downwards and the thumb and index finger should be close
-    (less than 50 pixels).
-    """
+    # Detects if the screenshot gesture is being performed.
     return(
         get_angle(landmarks_list[5], landmarks_list[6], landmarks_list[8])<50 and
         get_angle(landmarks_list[9], landmarks_list[10], landmarks_list[12])<50 and
@@ -84,25 +60,12 @@ def detect_gestures(frame, landmarks_list, processed_frame):
     """
     Detects hand gestures and performs corresponding mouse actions.
 
-    This function analyzes the landmarks of a detected hand to determine the 
-    gesture being performed. Based on the gesture, it executes specific actions 
-    such as moving the mouse pointer, left-click, right-click, double-click, 
-    or taking a screenshot.
-
     Args:
         frame: The current video frame being processed.
         landmarks_list: A list of hand landmark coordinates.
         processed_frame: The processed frame data containing hand landmarks.
-
-    The function includes:
-    - Moving the mouse pointer if the thumb is close to the index finger and 
-      the index finger is pointing upwards.
-    - Performing a left-click if the specific gesture for left-click is detected.
-    - Performing a right-click if the specific gesture for right-click is detected.
-    - Performing a double-click if the specific gesture for double-click is detected.
-    - Taking a screenshot if the specific gesture for screenshot is detected.
     """
-
+    # Check if there are enough landmarks to perform gesture detection
     if len(landmarks_list)>=21:
         index_fingertip= find_fingertip(processed_frame)
         thumb_index_dist= get_distance([landmarks_list[4], landmarks_list[5]])
@@ -174,6 +137,7 @@ def main():
         # Release the capture and close all windows
         cap.release()
         cv.destroyAllWindows()
+
 
 if __name__=='__main__':
     main()
