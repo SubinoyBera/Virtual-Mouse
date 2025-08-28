@@ -60,6 +60,7 @@ This will automatically open your webcam and start tracking. Raise your hand in 
 
 Want to add new features or any improvement, fix bug, etc.. - Please feel free to contact and/or make a `pull request`. Looking forward for your contributions, suggestions and great ideas! Your contibution can make a significant difference!!<br>
 For any issues or problem while you find, please report it with proper details in the `issues` section.
+
 <br>
 
 <b>🙏 🎗️ THANK YOU !! :) <br>
